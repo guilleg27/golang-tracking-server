@@ -10,11 +10,6 @@ import (
 
 var db *sql.DB
 
-// const username string = "root"
-// const password string = "k1ck2705"
-// const host string = "localhost"
-// const port int = 3306
-// const database string = "kickads_appserver"
 const username string = "userdb"
 const password string = "passdb"
 const host string = "hostdb"
