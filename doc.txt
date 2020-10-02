@@ -1,0 +1,54 @@
+/**********
+* Registra un click en la base de datos y redirecciona a una URL landing
+*@access public
+*
+*@param int $id número de campaña
+*@deprecated param bool $isRemanent indicador de tráfico remanente 
+*@deprecated param bool $isVectorBackButton indicador de vectores por BackButton
+*
+* @return redirección a URL
+**********/
+public function actionIndex($id=null, $isRemanent=false, $isVectorBackButton=false)
+
+
+/******************** PROCESAMIENTO ********************/
+- Captura de parámetros
+	Kickads params: cid, ntoken, pub_id, source, device_id, gaid, idfa
+	//GoogleAds params: 'g_net', 'g_key', 'g_cre', 'g_pla', 'g_mty', 'g_dev','g_cre' 
+- Validaciones de Modelos
+	Búsqueda de modelos Campaign, Opportunity, Deal en Memcache o base de datos. 
+	TO-DO: como chequear returns vacios?? Si no se encuentra un resultado detener la app
+- Seteo de variables con nombres de parámetros a inyectar en URL landing y de variables a utilizar en la función.
+- TO-DO: funcionalidad para verificar campañas y/o proveedores pausados.
+- TO-DO: funcionalidad para bloquear clicks sin parametros
+- Crear modelo ClicksLogToday.
+	Asignación de atributos: campaigns_id, providers_id
+- Get custom params
+	Verificar si el proveedor tiene s2s y buscar parámetros custom que el proveedor haya enviado y no guardamos en columna específica.
+- Get visitor params
+	Asignación de atributos a modelo ClicksLogToday con variables $_SERVER.
+	Atributos: server_ip, ip_forwarded, user_agent, languaje, referer, app, redirect_url
+	SERVER: REMOTE_ADDR, HTTP_X_FORWARDED_FOR, HTTP_USER_AGENT, HTTP_ACCEPT_LANGUAGE, HTTP_REFERER, HTTP_X_REQUESTED_WITH, REQUEST_URI
+- FUTURE-FEATURE: Get Provider Adwords params
+	Comprobar si provider_id pertenece a Adwords y capturar sus parametros
+	¿Se puede trasladar esto al principio de la función?
+- Get IP data
+	Actualmente lo hacemos con el .BIN de IP2Location. Existe alguna alternativa?
+	Levantar servicio de IP2Location
+	Asignar atributos: country, city, carrier
+- Get Devices data
+	Actualmente lo hacemos con el servicio WURFL, el cual está obsoleto. Buscar alternativa.
+	Atributos que se desean obtener: device, device_model, os, os_version, browser, browser_version
+- Lógica de Source y DeviceID
+	//Analizar para un refactor
+- Asignación de atributos a modelo ClicksLogToday
+- Model->save() 
+- Armado RedirectURL
+	Inyección de parámetros, reemplazo de macros.
+- [Deprecated] Campaign PostData
+- [Deprecated] Lógica tráfico remanente, vectores, camuflaje googleAds
+- Integración con Fraudscore
+- Close DB
+- Redirect to CampaignURL
+
+
